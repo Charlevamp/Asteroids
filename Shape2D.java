@@ -60,6 +60,7 @@ public abstract class Shape2D
     private double sX = 1; // Scale X
     private double sY = 1; // Scale Y
     private double rotAngleZ = 0; // Rotation about the Z axis
+    public double angleVel; //angular velocity
     
 
     /**
@@ -331,6 +332,7 @@ public abstract class Shape2D
     public void Animate(){
         this.xPos += xVel;
         this.yPos += yVel;
+        this.rotAngleZ += angleVel;
     
     }
     
@@ -348,7 +350,7 @@ public abstract class Shape2D
      * @param sY - new sY value
      * @return void
      */
-    public void SetScaleX(double sY){
+    public void SetScaleX(double sX){
         this.sY = sY;
     
     }
