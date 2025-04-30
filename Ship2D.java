@@ -13,6 +13,7 @@ public class Ship2D extends Shape2D
     // instance variables - replace the example below with your own
     private BufferedImage[] imageFrames;
     private int frame;
+    
 
     /**
      * Constructor for objects of class Ship2D
@@ -37,15 +38,7 @@ public class Ship2D extends Shape2D
      */
     // Parametric constructor
      public void Draw(Graphics g) {
-        /*
-         // Draw the next Sprite frame
-        g.drawImage(imageFrames[frame], getXPos(), getYPos(), 50, 50, null);
-        frame++;
-        if (frame == imageFrames.length)
-        {
-        frame = 0;
-        }
-        */
+        
         
         Graphics2D g2d = (Graphics2D) g.create();
         
@@ -75,6 +68,17 @@ public class Ship2D extends Shape2D
         
         
     }  
+    
+    
+    
+    
+    /**
+     * Getter method for Sprite2D
+     *
+     * @param  g Graphics object
+     * @return void
+     */
+    
     
     /**
      * Draw method for Sprite2D

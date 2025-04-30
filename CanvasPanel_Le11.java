@@ -47,6 +47,8 @@ public class CanvasPanel_Le11 extends JPanel
     private boolean moveRight; 
     
     
+    
+    
     public static void main(String[] args){
         
     }
@@ -83,19 +85,19 @@ public class CanvasPanel_Le11 extends JPanel
     public void Simulate()
     { 
            
-            Shape2D shape = shapesList.get(0); // Only one shape now: the ship
+            Shape2D ship = shapesList.get(0); // Only one shape now: the ship
     
             // Handle rotation
             if (rotateLeft) {
-                shape.angleVel = -5;  
-                shape.Animate();
+                ship.angleVel = -5;  
+                ship.Animate();
             }
             else if (rotateRight) {
-                shape.angleVel = 5;   
-                shape.Animate();
+                ship.angleVel = 5;   
+                ship.Animate();
             }
             else {
-                shape.angleVel = 0;
+                ship.angleVel = 0;
             }
     
                 // Handle movement
@@ -116,11 +118,27 @@ public class CanvasPanel_Le11 extends JPanel
                 dx += moveSpeed;
             }
             
-            shape.Move(dx, dy);
+            ship.Move(dx, dy);
+            
+            for(int i = 1; i < shapesList.size(); i++){
+                Shape2D bullet = shapesList.get(i);
+                bullet.Animate();
+                
+            
+            }
     
             
-        
-        
+            shapesList.removeIf(shape -> (shape instanceof Ship_Projectile) && ((Ship_Projectile) shape).isOffScreen());
+            //
+            /*
+            for(int i = 1; i < shapesList.size(); i++){
+                if(((Ship_Projectile)shapesList.get(i)).isOffScreen()){
+                    shapesList.remove(shapesList.get(i));
+                
+                }
+            
+            }
+            */
     }
 
     // This method is called by renderloop
@@ -150,7 +168,7 @@ public class CanvasPanel_Le11 extends JPanel
             shape.Draw(g);
         }
         
-    
+        
         
         
     }
@@ -236,8 +254,31 @@ public class CanvasPanel_Le11 extends JPanel
                     //action = true;
                     moveRight = false;
                     break;
+            case KeyEvent.VK_SPACE:
+                shootProjectile();
+                break;
+                
             
         }
+    }
+    
+    /**
+     * Constructor for objects of class Ship_Projectile
+     */
+    public void shootProjectile(){
+        Shape2D ship = shapesList.get(0);
+        
+        int shipCenterX = ship.getXPos() + 13;
+        int shipCenterY = ship.getYPos() + 13;
+        double angle = ship.GetZRotate();
+        
+        Ship_Projectile bullet = new Ship_Projectile(shipCenterX, shipCenterY, angle);
+        shapesList.add(bullet);
+        
+        
+    
+    
+    
     }
     }
 }
