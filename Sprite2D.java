@@ -27,14 +27,6 @@ public class Sprite2D extends Shape2D
         }
         frame = 0;
     }
-
-
-    /**
-     * Draw method for Sprite2D
-     *
-     * @param  g Graphics object
-     * @return void
-     */
     // Parametric constructor
      public void Draw(Graphics g) {
         // Draw the next Sprite frame

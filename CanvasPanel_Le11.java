@@ -16,6 +16,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import javax.imageio.ImageIO;
+import java.util.Random;
 
 public class CanvasPanel_Le11 extends JPanel
 {
@@ -46,9 +47,11 @@ public class CanvasPanel_Le11 extends JPanel
     private boolean moveLeft;
     private boolean moveRight; 
     
-    
-    
-    
+    //asteroid
+    private ArrayList<Asteroid> asteroids = new ArrayList<>();
+    private BufferedImage[] asteroidFrames; // load your sprite frames elsewhere
+    private Random rand = new Random();
+    private int spawnTimer = 0;
     public static void main(String[] args){
         
     }
@@ -57,7 +60,14 @@ public class CanvasPanel_Le11 extends JPanel
     {   
         shapesList = new ArrayList<Shape2D>();
         action = false;
-    
+        
+        //asteroids
+        asteroidFrames = new BufferedImage[1];
+        try{
+            asteroidFrames[0] = ImageIO.read(new File("Asteroid1.png"));
+        } catch (IOException ie){
+            ie.printStackTrace();
+        }
         // Ship
         BufferedImage[] Ship_Sprite = new BufferedImage[1];
         try {
@@ -72,7 +82,7 @@ public class CanvasPanel_Le11 extends JPanel
         this.setFocusable(true);
         this.addKeyListener(new myActionListener());
         System.out.println("keyboard event registered");
-    
+       
         // Create a render loop
         Timer renderLoop = new Timer(30, (ActionEvent ev) -> {
             frameNumber++;
@@ -81,11 +91,56 @@ public class CanvasPanel_Le11 extends JPanel
         });
         renderLoop.start();
     }
+    
+    private void spawnAsteroid(){
+        int x,y;
+        int place = rand.nextInt(4); //pick random int for random spawn placement
+        switch(place){
+            case 0: // Top (above canvas)
+                x = rand.nextInt(CANVAS_WIDTH) + X_CORNER;
+                y = -100; // offscreen above
+                break;
+            case 1: // Bottom (below canvas)
+                x = rand.nextInt(CANVAS_WIDTH) + X_CORNER;
+                y = CANVAS_HEIGHT + Y_CORNER + 100; // offscreen below
+                break;
+            case 2: // Left (left of canvas)
+                x = -100;
+                y = rand.nextInt(CANVAS_HEIGHT) + Y_CORNER;
+                break;
+            case 3: // Right (right of canvas)
+                x = CANVAS_WIDTH + X_CORNER + 100;
+                y = rand.nextInt(CANVAS_HEIGHT) + Y_CORNER;
+                break;
+            default:
+                x = 0;
+                y = 0;
+        }
+        
+        double centerX = X_CORNER + CANVAS_WIDTH / 2.0;
+        double centerY = Y_CORNER + CANVAS_HEIGHT / 2.0;
+        double diffX = centerX - x + rand.nextInt(201) - 100; // offset -100 to +100
+        double diffY = centerY - y + rand.nextInt(201) - 100; // offset -100 to +100
+        double length = Math.sqrt(diffX * diffX + diffY * diffY);
+
+        double speed = 2.0;
+        double dx = (diffX / length) * speed;
+        double dy = (diffY / length) * speed;
+        
+        asteroids.add(new Asteroid(x, y,dx, dy, asteroidFrames));
+    }
 
     public void Simulate()
     { 
-           
-            Shape2D ship = shapesList.get(0); // Only one shape now: the ship
+        spawnTimer++; //timer for asteroid spawns
+        if(spawnTimer % 35 == 0){ 
+            spawnAsteroid();
+            }
+        
+        for(Asteroid a : asteroids){
+            a.update();
+        }
+        Shape2D ship = shapesList.get(0); // Only one shape now: the ship
     
             // Handle rotation
             if (rotateLeft) {
@@ -139,6 +194,21 @@ public class CanvasPanel_Le11 extends JPanel
             
             }
             */
+
+        Rectangle shipBounds = ((Ship2D) ship).getBounds(); // cast to access getBounds
+
+        for (Asteroid a : asteroids) {
+            Rectangle asteroidBounds = a.getBounds();
+
+            if (shipBounds.intersects(asteroidBounds)) {
+                System.out.println("COLLISION DETECTED!");
+                // Handle collision - e.g., end game, remove ship, show explosion, etc.
+                // Example:
+                shapesList.remove(ship); // remove the ship
+                break; // optional: stop checking further
+            }
+            
+        }
     }
 
     // This method is called by renderloop
@@ -163,14 +233,12 @@ public class CanvasPanel_Le11 extends JPanel
         g.drawString(Integer.toString(frameNumber), 300, 70);
 
         // Render all the shapes in the shapes list
-        for (Shape2D shape : shapesList)
-        {
+        for (Shape2D shape : shapesList){
             shape.Draw(g);
         }
-        
-        
-        
-        
+        for(Asteroid a : asteroids){
+            a.Draw(g);
+        }
     }
     
 
@@ -193,7 +261,7 @@ public class CanvasPanel_Le11 extends JPanel
     {
         return Y_CORNER;
     }
-    public class myActionListener extends KeyAdapter 
+public class myActionListener extends KeyAdapter 
     {
         public void keyPressed(KeyEvent e)
         {
@@ -274,11 +342,6 @@ public class CanvasPanel_Le11 extends JPanel
         
         Ship_Projectile bullet = new Ship_Projectile(shipCenterX, shipCenterY, angle);
         shapesList.add(bullet);
-        
-        
-    
-    
-    
     }
     }
 }
