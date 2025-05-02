@@ -1,6 +1,6 @@
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-
+import java.awt.Rectangle;
 /**
  * Write a description of class Ship2D here.
  *
@@ -14,6 +14,8 @@ public class Ship2D extends Shape2D
     private BufferedImage[] imageFrames;
     private int frame;
     
+    private double scaleX = 1.0; // Default scale for X axis
+    private double scaleY = 1.0; // Default scale for Y axis
 
     /**
      * Constructor for objects of class Ship2D
@@ -68,25 +70,15 @@ public class Ship2D extends Shape2D
         
         
     }  
-    
-    
-    
-    
-    /**
-     * Getter method for Sprite2D
-     *
-     * @param  g Graphics object
-     * @return void
-     */
-    
-    
-    /**
-     * Draw method for Sprite2D
-     *
-     * @param  g Graphics object
-     * @return void
-     */
-    
+    public Rectangle getBounds() {
+         int width = (int)(26 * scaleX);
+        int height = (int)(26 * scaleY);
+
+        int topLeftX = getXPos() - width / 2;
+        int topLeftY = getYPos() - height / 2;
+
+        return new Rectangle(topLeftX, topLeftY, width, height);
+    }
     
 }
 

@@ -1,5 +1,5 @@
 import java.awt.Graphics;
-
+import java.awt.Rectangle;
 /**
  * Write a description of class Ship_Projectile here.
  *
@@ -62,5 +62,8 @@ public class Ship_Projectile extends Shape2D
     public boolean isOffScreen() {
         return (xPos < -size || xPos > CanvasPanel_Le11.getCanvasWidth() + size ||
                 yPos < -size || yPos > CanvasPanel_Le11.getCanvasHeight() + size);
+    }
+    public Rectangle getBounds() {
+        return new Rectangle(xPos, yPos, size, size);
     }
 }

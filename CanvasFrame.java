@@ -6,7 +6,7 @@
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-public class CanvasFrame 
+public class CanvasFrame
 {
     private JFrame frame;       // the actual frame(window) we'll be showing
     private CanvasPanel_Le11 canvas; // the canvas we'll be drawing
