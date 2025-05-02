@@ -60,7 +60,7 @@ public class Ship_Projectile extends Shape2D
      * @return void
      */
     public boolean isOffScreen() {
-        return (xPos < -size || xPos > CanvasPanel.getCanvasWidth() + size ||
-                yPos < -size || yPos > CanvasPanel.getCanvasHeight() + size);
+        return (xPos < -size || xPos > CanvasPanel_Le11.getCanvasWidth() + size ||
+                yPos < -size || yPos > CanvasPanel_Le11.getCanvasHeight() + size);
     }
 }

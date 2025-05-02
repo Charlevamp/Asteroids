@@ -1,14 +1,12 @@
 /**
  * 2D Frame for 2D Graphics
- * 
- *
- * @author (Prof R)
- * @version (v1.0 11-17-22)
+ * @author Antoine Brown
+ * @version 4-17-2025
  */
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-public class CanvasFrame
+public class CanvasFrame 
 {
     private JFrame frame;       // the actual frame(window) we'll be showing
     private CanvasPanel_Le11 canvas; // the canvas we'll be drawing
@@ -30,5 +28,10 @@ public class CanvasFrame
 
         frame.pack();                       //make everything the preferred size
         frame.setVisible(true);             //show the frame
+    }
+    public static void main(String[] args){
+        System.out.println();
+
+
     }
 }
